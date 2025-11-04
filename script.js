@@ -5,9 +5,6 @@
   const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 document.addEventListener('DOMContentLoaded', () => {
- 
-
-  // LOGIN BUTTON
   const loginBtn = document.getElementById('login-btn');
   const loginMessage = document.getElementById('login-message');
 
@@ -49,5 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
 
 
