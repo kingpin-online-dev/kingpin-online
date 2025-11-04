@@ -1,15 +1,17 @@
-// -----------------------------
-// Supabase setup (global scope)
-// -----------------------------
-const supabaseUrl = 'https://wrpntocksemglpxlmodd.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndycG50b2Nrc2VtZ2xweGxtb2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyNzQxNjcsImV4cCI6MjA3Nzg1MDE2N30.4DyuiCHzKXlvmmJgjfNo2RrF-pw-gbuaHIZXV5NR1wU';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+// Wait until Supabase has definitely loaded
+window.addEventListener('DOMContentLoaded', async () => {
+  // Confirm Supabase is available
+  if (!window.supabase) {
+    console.error('Supabase library failed to load.');
+    return;
+  }
 
-// -----------------------------
-// Wait for page to fully load
-// -----------------------------
-document.addEventListener('DOMContentLoaded', () => {
-  // LOGIN
+  // Initialize Supabase client
+  const supabaseUrl = 'https://wrpntocksemglpxlmodd.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndycG50b2Nrc2VtZ2xweGxtb2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyNzQxNjcsImV4cCI6MjA3Nzg1MDE2N30.4DyuiCHzKXlvmmJgjfNo2RrF-pw-gbuaHIZXV5NR1wU';
+  const client = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+  // LOGIN BUTTON
   const loginBtn = document.getElementById('login-btn');
   const loginMessage = document.getElementById('login-message');
 
@@ -17,13 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
-    if (!email || !password) {
-      loginMessage.style.color = 'red';
-      loginMessage.textContent = 'Please enter email and password.';
-      return;
-    }
-
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
 
     if (error) {
       loginMessage.style.color = 'red';
@@ -31,12 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       loginMessage.style.color = 'green';
       loginMessage.textContent = `Login successful! Welcome, ${data.user.email}`;
-      // Optional: redirect to a dashboard page
-      // window.location.href = 'dashboard.html';
     }
   });
 
-  // SIGNUP
+  // SIGNUP BUTTON
   const signupBtn = document.getElementById('signup-btn');
   const signupMessage = document.getElementById('signup-message');
 
@@ -44,13 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('signup-email').value;
     const password = document.getElementById('signup-password').value;
 
-    if (!email || !password) {
-      signupMessage.style.color = 'red';
-      signupMessage.textContent = 'Please enter email and password.';
-      return;
-    }
-
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await client.auth.signUp({ email, password });
 
     if (error) {
       signupMessage.style.color = 'red';
@@ -58,10 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       signupMessage.style.color = 'green';
       signupMessage.textContent = 'Account created! Please log in.';
-      // Clear the input fields
       document.getElementById('signup-email').value = '';
       document.getElementById('signup-password').value = '';
     }
   });
 });
+
 
