@@ -25,8 +25,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       loginMessage.style.color = 'red';
       loginMessage.textContent = error.message;
     } else {
-      loginMessage.style.color = 'green';
-      loginMessage.textContent = `Login successful! Welcome, ${data.user.email}`;
+      window.location.href = "dashboard.html";
+
     }
   });
 
@@ -51,5 +51,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 });
+
 
 
