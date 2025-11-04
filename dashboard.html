@@ -4,24 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kingpin Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
-<body class="dashboard">
-  <header>
-    <h1>Welcome to Your Empire</h1>
-    <button id="logout-btn">Logout</button>
+<body>
+  <header class="dash-header">
+    <h1>Kingpin Online</h1>
+    <nav>
+      <button id="logout-btn">Logout</button>
+    </nav>
   </header>
 
-  <main>
-    <div class="user-info">
-      <h2 id="welcome-text">Loading your info...</h2>
-      <div class="stats">
-        <p><strong>Cash:</strong> $0</p>
-        <p><strong>Reputation:</strong> 0</p>
-        <p><strong>Gang:</strong> None</p>
+  <main class="dash-main">
+    <section class="welcome">
+      <h2>Welcome, <span id="user-email">Player</span></h2>
+      <p>Your empire starts here. Track your cash, power, and influence.</p>
+    </section>
+
+    <section class="stats">
+      <div class="stat-card">
+        <h3>Cash</h3>
+        <p>$0</p>
       </div>
-    </div>
+      <div class="stat-card">
+        <h3>Reputation</h3>
+        <p>Unknown</p>
+      </div>
+      <div class="stat-card">
+        <h3>Territory</h3>
+        <p>0 Blocks</p>
+      </div>
+    </section>
   </main>
+
+  <footer class="dash-footer">
+    <p>© 2025 Kingpin Online. All rights reserved.</p>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="dashboard.js"></script>
