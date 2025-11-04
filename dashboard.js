@@ -59,11 +59,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      const { error: updateError } = await supabase.from("profiles").upsert({
-        user_id: user.id,
-        display_name: newName,
-        last_name_change: now.toISOString(),
-      });
+      const { error: updateError } = await supabase
+  .from("profiles")
+  .upsert(
+    {
+      user_id: user.id,
+      display_name: newName,
+      last_name_change: now.toISOString(),
+    },
+    { onConflict: "user_id" } // 👈 Add this part
+  );
+
 
       if (updateError) {
         displayMessage.style.color = "red";
