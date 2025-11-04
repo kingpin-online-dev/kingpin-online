@@ -1,8 +1,12 @@
-document.addEventListener('DOMContentLoaded', () => {
+
   // Supabase setup
   const supabaseUrl = 'https://wrpntocksemglpxlmodd.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndycG50b2Nrc2VtZ2xweGxtb2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyNzQxNjcsImV4cCI6MjA3Nzg1MDE2N30.4DyuiCHzKXlvmmJgjfNo2RrF-pw-gbuaHIZXV5NR1wU';
   const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const loginBtn = document.getElementById('login-btn');
+  const signupBtn = document.getElementById('signup-btn')
 
   // LOGIN BUTTON
   const loginBtn = document.getElementById('login-btn');
@@ -46,3 +50,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
