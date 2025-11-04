@@ -14,27 +14,37 @@
     </nav>
   </header>
 
-  <main class="dash-main">
-    <section class="welcome">
-      <h2>Welcome, <span id="user-email">Player</span></h2>
-      <p>Your empire starts here. Track your cash, power, and influence.</p>
-    </section>
+ <main class="dash-main">
+  <section class="welcome">
+    <h2>Welcome, <span id="user-email">Player</span></h2>
+    <p>Your empire starts here. Track your cash, power, and influence.</p>
+  </section>
 
-    <section class="stats">
-      <div class="stat-card">
-        <h3>Cash</h3>
-        <p>$0</p>
-      </div>
-      <div class="stat-card">
-        <h3>Reputation</h3>
-        <p>Unknown</p>
-      </div>
-      <div class="stat-card">
-        <h3>Territory</h3>
-        <p>0 Blocks</p>
-      </div>
-    </section>
-  </main>
+  <section class="stats">
+    <div class="stat-card">
+      <h3>Cash</h3>
+      <p>$0</p>
+    </div>
+    <div class="stat-card">
+      <h3>Reputation</h3>
+      <p>Unknown</p>
+    </div>
+    <div class="stat-card">
+      <h3>Territory</h3>
+      <p>0 Blocks</p>
+    </div>
+  </section>
+
+  <section class="profile-settings">
+    <h3>Profile Settings</h3>
+    <form id="display-name-form">
+      <input type="text" id="display-name" placeholder="Enter new display name" required />
+      <button type="submit">Update Name</button>
+    </form>
+    <p id="display-message"></p>
+  </section>
+</main>
+
 
   <footer class="dash-footer">
     <p>© 2025 Kingpin Online. All rights reserved.</p>
