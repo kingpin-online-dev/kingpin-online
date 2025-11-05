@@ -3,6 +3,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndycG50b2Nrc2VtZ2xweGxtb2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyNzQxNjcsImV4cCI6MjA3Nzg1MDE2N30.4DyuiCHzKXlvmmJgjfNo2RrF-pw-gbuaHIZXV5NR1wU";
   const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+  // === PLAYER STATS ===
+async function updateStatsDisplay() {
+  // Get the logged-in user ID
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  // Pull their stats from Supabase
+  const { data, error } = await supabase
+    .from('user_stats')
+    .select('cash, reputation, heat')
+    .eq('id', user.id)
+    .single();
+
+  if (error) {
+    console.error('Stats fetch error:', error);
+    return;
+  }
+
+  // Update the dashboard text
+  document.getElementById('stat-cash').textContent = `$${data.cash}`;
+  document.getElementById('stat-reputation').textContent = data.reputation;
+  document.getElementById('stat-heat').textContent = data.heat;
+}
+
   // Get current logged-in user
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -116,11 +143,15 @@ async function attemptCrime(crimeKey) {
   } else {
     resultEl.textContent = `❌ You failed the crime. Heat: ${data.new_heat}`;
   }
+updateStatsDisplay();
+
 }
 
 // Hook up the button
 document.getElementById('rob-store-btn').addEventListener('click', () => {
   attemptCrime('rob_store');
 });
+  // Show stats when page opens
+updateStatsDisplay();
 });
 
