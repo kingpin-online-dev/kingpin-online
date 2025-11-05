@@ -189,6 +189,7 @@ if (data?.new_level && data?.new_level > 1) {
 }
 
 }
+  
   // Show stats when page opens
 updateStatsDisplay();
 loadCrimes();
