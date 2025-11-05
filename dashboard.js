@@ -177,11 +177,15 @@ async function purchaseItem(itemId) {
     return;
   }
 
-  if (data?.success) {
-    resultEl.textContent = `✅ Purchase successful! You bought ${data.item_name}.`;
-  } else {
-    resultEl.textContent = `❌ Not enough money.`;
-  }
+// Supabase returns RPC result as an array, so read index 0
+const purchase = data?.[0];
+
+if (purchase?.success) {
+  resultEl.textContent = `✅ Purchase successful! You bought ${purchase.item_name}.`;
+} else {
+  resultEl.textContent = `❌ Not enough money.`;
+}
+
 
   await updateStatsDisplay();
 }
