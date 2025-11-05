@@ -5,30 +5,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // === PLAYER STATS ===
 async function updateStatsDisplay() {
-  // Get the logged-in user ID
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+  const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
-  // Pull their stats from Supabase
   const { data, error } = await supabase
     .from('user_stats')
-    .select('cash, reputation, heat')
+    .select('cash, reputation, heat, xp, level')
     .eq('id', user.id)
     .single();
 
   if (error) {
-    console.error('Stats fetch error:', error);
+    console.error(error);
     return;
   }
 
-  // Update the dashboard text
-  document.getElementById('stat-cash').textContent = `$${data.cash}`;
+  document.getElementById('stat-cash').textContent = data.cash.toLocaleString();
   document.getElementById('stat-reputation').textContent = data.reputation;
   document.getElementById('stat-heat').textContent = data.heat;
+  document.getElementById('stat-xp').textContent = data.xp.toLocaleString();
+  document.getElementById('stat-level').textContent = data.level;
 }
+
 
   // Get current logged-in user
   const { data: { user } } = await supabase.auth.getUser();
