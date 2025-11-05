@@ -155,7 +155,6 @@ if (data?.error) {
     resultEl.textContent = `❌ You failed the crime. Heat: ${data.new_heat}`;
   }
 updateStatsDisplay();
-
 }
 
 // Hook up the button
