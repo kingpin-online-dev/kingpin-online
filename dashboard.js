@@ -152,48 +152,39 @@ async function attemptCrime(crimeKey) {
   // --- Handle backend errors (cooldown, jail, etc.) ---
   if (data?.error) {
     if (data.error === 'cooldown') {
-      resultEl.textContent = `⏳ Cooldown active. Try again in ${Math.ceil(
-        data.remaining_seconds
-      )} seconds.`;
-    } 
-    else if (data.error === 'jailed' || data.error === 'jailed_now') {
-      resultEl.textContent =
-        data.message ||
-        `🚔 You're in jail for ${Math.ceil(data.remaining_seconds / 60)} minutes!`;
-    } 
-    else {
+      resultEl.textContent = `⏳ Cooldown active. Try again in ${Math.ceil(data.remaining_seconds)} seconds.`;
+    } else if (data.error === 'jailed' || data.error === 'jailed_now') {
+      resultEl.textContent = data.message || `🚔 You're in jail!`;
+    } else {
       resultEl.textContent = `Error: ${data.error}`;
     }
 
-    // Always refresh stats so the player sees updated heat / cash even if jailed
     await updateStatsDisplay();
     return;
   }
 
   // --- Success or failure outcome ---
-  if (data.success) {
-    resultEl.textContent = `✅ Success! You stole $${data.reward}.`;
-  } else {
-    resultEl.textContent = `❌ You failed the crime.`;
-  }
+  resultEl.textContent = data.success
+    ? `✅ Success! You stole $${data.reward}.`
+    : `❌ You failed the crime.`;
 
-  // 🔄 Refresh player stats instantly
   await updateStatsDisplay();
 
   // Check for level-up
-if (data?.new_level && data?.new_level > 1) {
-  const prevLevel = parseInt(document.getElementById('stat-level').textContent || 1);
-  if (data.new_level > prevLevel) {
-    alert(`🎉 You leveled up to Level ${data.new_level}!`);
+  if (data?.new_level && data?.new_level > 1) {
+    const prevLevel = parseInt(document.getElementById('stat-level').textContent || 1);
+    if (data.new_level > prevLevel) {
+      alert(`🎉 You leveled up to Level ${data.new_level}!`);
+    }
   }
-}
+} // ✅ Properly closes attemptCrime()
 
-}
-  
-  // Show stats when page opens
+
+// === INITIAL PAGE LOAD ===
 updateStatsDisplay();
 loadCrimes();
 
+// === TAB SWITCHING ===
 document.getElementById("tab-crimes").onclick = () => {
   document.getElementById("page-crimes").classList.add("active");
   document.getElementById("page-shop").classList.remove("active");
@@ -204,5 +195,5 @@ document.getElementById("tab-shop").onclick = () => {
   document.getElementById("page-crimes").classList.remove("active");
 };
 
-});
+}); // ✅ Closes DOMContentLoaded
 
