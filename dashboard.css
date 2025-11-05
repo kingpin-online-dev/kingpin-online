@@ -219,3 +219,20 @@ body {
   border-radius:6px;
   font-size:14px;
 }
+
+#education-list button.course-btn {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  background: #333;
+  border: 1px solid #555;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+#education-status {
+  margin-top: 10px;
+  font-size: 1.1em;
+}
