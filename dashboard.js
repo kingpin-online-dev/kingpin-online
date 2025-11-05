@@ -132,9 +132,19 @@ async function loadCrimes() {
   data.forEach(crime => {
     const btn = document.createElement('button');
     btn.className = 'crime-btn';
-    btn.textContent = `${crime.name} ($${crime.min_reward}-${crime.max_reward})`;
-    btn.onclick = () => attemptCrime(crime.key);
-    crimeList.appendChild(btn);
+const playerLevel = parseInt(document.getElementById('stat-level').textContent || 1);
+
+btn.textContent = `${crime.name} ($${crime.min_reward}-${crime.max_reward})`;
+
+if (playerLevel < crime.min_level) {
+  btn.disabled = true;
+  btn.style.opacity = 0.4;
+  btn.textContent += ` — 🔒 Requires Level ${crime.min_level}`;
+} else {
+  btn.onclick = () => attemptCrime(crime.key);
+}
+
+crimeList.appendChild(btn);
   });
 }
 
