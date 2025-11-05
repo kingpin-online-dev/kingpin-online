@@ -252,7 +252,7 @@ async function enrollCourse(courseId) {
   const resultEl = document.getElementById('education-status');
   resultEl.textContent = "⏳ Starting course...";
 
-  const { data, error } = await supabase.rpc('enroll_in_course', { course_id: courseId });
+  const { data, error } = await supabase.rpc('enroll_in_course', { p_course_id: courseId });
 
   if (error) {
     console.error(error);
