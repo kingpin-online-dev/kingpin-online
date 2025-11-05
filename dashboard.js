@@ -252,16 +252,18 @@ async function enrollCourse(courseId) {
   const resultEl = document.getElementById('education-status');
   resultEl.textContent = "⏳ Starting course...";
 
-  const { error } = await supabase.rpc('enroll_in_course', { course_id: courseId });
+  const { data, error } = await supabase.rpc('enroll_in_course', { course_id: courseId });
 
   if (error) {
-    resultEl.textContent = "⚠️ You’re already enrolled or something went wrong.";
+    console.error(error);
+    resultEl.textContent = "⚠️ Cannot enroll — check course ID.";
     return;
   }
 
-  resultEl.textContent = "📚 Course started! Time will continue even if you log out.";
+  resultEl.textContent = "📘 Course started! Time will continue even if you're offline.";
   loadEducationProgress();
 }
+
 
 
   // === SHOP LIST ===
