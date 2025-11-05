@@ -11,46 +11,51 @@ function playCrimeAnimation(success) {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const player = { x: 20, y: 100 };
-  const npc = { x: 200, y: 100 };
+  // Start positions
+  const player = { x: 40, y: canvas.height / 2 };
+  const npc = { x: canvas.width - 60, y: canvas.height / 2 };
 
-  let frame = 0;
-  const totalFrames = 50;
-  const midpoint = totalFrames / 2;
+  let touched = false;
+  let movingForward = true;
 
   const interval = setInterval(() => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Move player toward NPC until halfway
-    if (frame < midpoint) {
+    // Move player toward NPC until collision
+    if (movingForward && !touched) {
       player.x += 2;
+
+      // Check collision / touching
+      if (Math.abs(player.x - npc.x) < 10) {
+        touched = true;
+        movingForward = false; // Begin walking away afterward
+      }
     } else {
-      // After interaction → move away
+      // Walk back after touching
       player.x -= 2;
     }
 
-    // Draw player (gold)
-    ctx.fillStyle = "#FFD700";
-    ctx.beginPath();
-    ctx.arc(player.x, player.y, 8, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Draw NPC:
-    // white before bump → green/red after bump
-    if (frame < midpoint) {
-      ctx.fillStyle = "#FFFFFF"; // white before bump
-    } else {
-      ctx.fillStyle = success ? "#00FF00" : "#FF0000"; // after bump
-    }
-
+    // Draw NPC (always white)
+    ctx.fillStyle = "#FFFFFF";
     ctx.beginPath();
     ctx.arc(npc.x, npc.y, 8, 0, Math.PI * 2);
     ctx.fill();
 
-    frame++;
-    if (frame >= totalFrames) clearInterval(interval);
+    // Draw Player:
+    // - Gold before bump
+    // - Turns green/red after bump
+    ctx.fillStyle = touched ? (success ? "#00FF00" : "#FF0000") : "#FFD700";
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+
+    // End the animation when player reaches starting point again
+    if (touched && player.x < 20) {
+      clearInterval(interval);
+    }
   }, 30);
 }
+
 
 
   // === PLAYER STATS ===
