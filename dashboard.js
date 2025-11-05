@@ -91,7 +91,7 @@ if (nameInput) {
       nameInput.value = "";
       document.getElementById("user-email").textContent = newName;
     }
-  }
+  });
 }
 
 
