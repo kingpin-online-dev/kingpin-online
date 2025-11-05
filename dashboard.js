@@ -113,6 +113,31 @@ async function updateStatsDisplay() {
       await supabase.auth.signOut();
       window.location.href = "index.html";
     });
+
+  // === CRIME LIST ===
+async function loadCrimes() {
+  const { data, error } = await supabase
+    .from('crimes')
+    .select('*')
+    .order('difficulty', { ascending: true });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const crimeList = document.getElementById('crime-list');
+  crimeList.innerHTML = '';
+
+  data.forEach(crime => {
+    const btn = document.createElement('button');
+    btn.className = 'crime-btn';
+    btn.textContent = `${crime.name} ($${crime.min_reward}-${crime.max_reward})`;
+    btn.onclick = () => attemptCrime(crime.key);
+    crimeList.appendChild(btn);
+  });
+}
+
   // === CRIME SYSTEM ===
 async function attemptCrime(crimeKey) {
   const resultEl = document.getElementById('crime-result');
@@ -166,13 +191,8 @@ if (data?.new_level && data?.new_level > 1) {
 }
 
 }
-
-
-// Hook up the button
-document.getElementById('rob-store-btn').addEventListener('click', () => {
-  attemptCrime('rob_store');
-});
   // Show stats when page opens
 updateStatsDisplay();
+loadCrimes();
 });
 
