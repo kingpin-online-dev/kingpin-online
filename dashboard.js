@@ -233,7 +233,8 @@ async function attemptCrime(crimeKey) {
 // === INITIAL PAGE LOAD ===
 updateStatsDisplay();
 loadCrimes();
-
+loadShop();
+  
 // === TAB SWITCHING ===
 document.getElementById("tab-crimes").onclick = () => {
   document.getElementById("page-crimes").classList.add("active");
