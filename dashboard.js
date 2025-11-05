@@ -191,6 +191,40 @@ crimeList.appendChild(btn);
   });
 }
 
+  async function loadEducation() {
+  const { data, error } = await supabase
+    .from('education_courses')
+    .select('*')
+    .order('duration_minutes', { ascending: true });
+
+  if (error) return console.error(error);
+
+  const list = document.getElementById('education-list');
+  list.innerHTML = '';
+
+  data.forEach(course => {
+    const btn = document.createElement('button');
+    btn.className = 'shop-btn';
+    btn.textContent = `${course.name} (${course.duration_minutes} min)`;
+    btn.onclick = () => enrollCourse(course.id);
+    list.appendChild(btn);
+  });
+}
+
+async function enrollCourse(courseId) {
+  const resultEl = document.getElementById('education-status');
+
+  const { error } = await supabase
+    .from('education_progress')
+    .insert({ course_id: courseId });
+
+  if (error) {
+    resultEl.textContent = "⚠️ Already enrolled or cannot enroll.";
+  } else {
+    resultEl.textContent = "📚 Course started! It will finish in real time.";
+  }
+}
+
   // === SHOP LIST ===
 async function loadShop() {
   const { data, error } = await supabase
@@ -336,6 +370,14 @@ document.getElementById("tab-inventory").onclick = () => {
   document.getElementById("page-shop").classList.remove("active");
   loadInventory();
 };
+
+  document.getElementById("tab-education").onclick = () => {
+  document.getElementById("page-education").classList.add("active");
+  document.getElementById("page-crimes").classList.remove("active");
+  document.getElementById("page-shop").classList.remove("active");
+  loadEducation();
+};
+
 
 }); // ✅ Closes DOMContentLoaded
 
