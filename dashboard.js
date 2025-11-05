@@ -94,30 +94,6 @@ if (nameInput) {
   });
 }
 
-
-      const { error: updateError } = await supabase
-  .from("profiles")
-  .upsert(
-    {
-      user_id: user.id,
-      display_name: newName,
-      last_name_change: now.toISOString(),
-    },
-    { onConflict: "user_id" } // 👈 Add this part
-  );
-
-
-      if (updateError) {
-        displayMessage.style.color = "red";
-        displayMessage.textContent = updateError.message;
-      } else {
-        displayMessage.style.color = "green";
-        displayMessage.textContent = "Display name updated!";
-        nameInput.value = "";
-        nameTarget.textContent = newName;
-      }
-    });
-
   // Logout button
   document
     .getElementById("logout-btn")
