@@ -211,19 +211,58 @@ crimeList.appendChild(btn);
   });
 }
 
-async function enrollCourse(courseId) {
+async function loadEducationProgress() {
   const resultEl = document.getElementById('education-status');
+  resultEl.textContent = '';
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('education_progress')
-    .insert({ course_id: courseId });
+    .select(`
+      start_time,
+      duration_minutes,
+      completed,
+      course:education_courses(name, reward_stat, reward_amount)
+    `)
+    .eq('user_id', (await supabase.auth.getUser()).data.user.id)
+    .single();
 
-  if (error) {
-    resultEl.textContent = "⚠️ Already enrolled or cannot enroll.";
-  } else {
-    resultEl.textContent = "📚 Course started! It will finish in real time.";
+  if (!data) return;
+
+  // Calculate remaining time
+  const start = new Date(data.start_time);
+  const end = new Date(start.getTime() + data.duration_minutes * 60000);
+  const now = new Date();
+
+  if (now >= end && !data.completed) {
+    // Mark completed and apply reward
+    await supabase.rpc('finish_course', {});
+    resultEl.textContent = `🎓 Course Completed! +${data.course.reward_amount} ${data.course.reward_stat}`;
+    updateStatsDisplay();
+    return;
+  }
+
+  if (!data.completed) {
+    const minutesLeft = Math.ceil((end - now) / 60000);
+    resultEl.textContent = `📘 Studying: ${data.course.name} (${minutesLeft} min left)`;
   }
 }
+
+
+async function enrollCourse(courseId) {
+  const resultEl = document.getElementById('education-status');
+  resultEl.textContent = "⏳ Starting course...";
+
+  const { error } = await supabase.rpc('enroll_in_course', { course_id: courseId });
+
+  if (error) {
+    resultEl.textContent = "⚠️ You’re already enrolled or something went wrong.";
+    return;
+  }
+
+  resultEl.textContent = "📚 Course started! Time will continue even if you log out.";
+  loadEducationProgress();
+}
+
 
   // === SHOP LIST ===
 async function loadShop() {
@@ -352,6 +391,8 @@ updateStatsDisplay();
 loadCrimes();
 loadShop();
 loadInventory();
+loadEducation();
+loadEducationProgress();
   
 // === TAB SWITCHING ===
 document.getElementById("tab-crimes").onclick = () => {
