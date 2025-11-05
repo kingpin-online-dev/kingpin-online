@@ -156,6 +156,15 @@ async function attemptCrime(crimeKey) {
 
   // 🔄 Refresh player stats instantly
   await updateStatsDisplay();
+
+  // Check for level-up
+if (data?.new_level && data?.new_level > 1) {
+  const prevLevel = parseInt(document.getElementById('stat-level').textContent || 1);
+  if (data.new_level > prevLevel) {
+    alert(`🎉 You leveled up to Level ${data.new_level}!`);
+  }
+}
+
 }
 
 
