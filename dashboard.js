@@ -160,6 +160,28 @@ async function loadShop() {
   });
 }
 
+// === INVENTORY ===
+async function loadInventory() {
+  const { data, error } = await supabase
+    .from('inventory')
+    .select('quantity, shop_items(name, description)')
+    .order('quantity', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const inv = document.getElementById('inventory-list');
+  inv.innerHTML = '';
+
+  data.forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'inventory-item';
+    div.textContent = `${entry.shop_items.name} x${entry.quantity}`;
+    inv.appendChild(div);
+  });
+}
 
 // === PURCHASE ITEM ===
 async function purchaseItem(itemId) {
@@ -238,6 +260,7 @@ async function attemptCrime(crimeKey) {
 updateStatsDisplay();
 loadCrimes();
 loadShop();
+loadInventory();
   
 // === TAB SWITCHING ===
 document.getElementById("tab-crimes").onclick = () => {
@@ -248,6 +271,13 @@ document.getElementById("tab-crimes").onclick = () => {
 document.getElementById("tab-shop").onclick = () => {
   document.getElementById("page-shop").classList.add("active");
   document.getElementById("page-crimes").classList.remove("active");
+};
+
+document.getElementById("tab-inventory").onclick = () => {
+  document.getElementById("page-inventory").classList.add("active");
+  document.getElementById("page-crimes").classList.remove("active");
+  document.getElementById("page-shop").classList.remove("active");
+  loadInventory();
 };
 
 }); // ✅ Closes DOMContentLoaded
