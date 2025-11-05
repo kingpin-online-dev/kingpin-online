@@ -129,33 +129,38 @@ async function attemptCrime(crimeKey) {
     return;
   }
 
-  // --- Handle all error responses from the backend ---
-if (data?.error) {
-  if (data.error === 'cooldown') {
-    resultEl.textContent = `⏳ Cooldown active. Try again in ${Math.ceil(data.remaining_seconds)} seconds.`;
-  } 
-  else if (data.error === 'jailed' || data.error === 'jailed_now') {
-    // 🚔 Jail feedback
-    resultEl.textContent =
-      data.message ||
-      `🚔 You're in jail for ${Math.ceil(data.remaining_seconds / 60)} minutes!`;
+  // --- Handle backend errors (cooldown, jail, etc.) ---
+  if (data?.error) {
+    if (data.error === 'cooldown') {
+      resultEl.textContent = `⏳ Cooldown active. Try again in ${Math.ceil(
+        data.remaining_seconds
+      )} seconds.`;
+    } 
+    else if (data.error === 'jailed' || data.error === 'jailed_now') {
+      resultEl.textContent =
+        data.message ||
+        `🚔 You're in jail for ${Math.ceil(data.remaining_seconds / 60)} minutes!`;
+    } 
+    else {
+      resultEl.textContent = `Error: ${data.error}`;
+    }
+
+    // Always refresh stats so the player sees updated heat / cash even if jailed
     await updateStatsDisplay();
-  } 
-  else {
-    resultEl.textContent = `Error: ${data.error}`;
-  }
-  return;
-}
-
+    return;
   }
 
+  // --- Success or failure outcome ---
   if (data.success) {
-    resultEl.textContent = `✅ Success! You stole $${data.reward}. Cash: $${data.new_cash}. Heat: ${data.new_heat}`;
+    resultEl.textContent = `✅ Success! You stole $${data.reward}.`;
   } else {
-    resultEl.textContent = `❌ You failed the crime. Heat: ${data.new_heat}`;
+    resultEl.textContent = `❌ You failed the crime.`;
   }
-updateStatsDisplay();
+
+  // 🔄 Refresh player stats instantly
+  await updateStatsDisplay();
 }
+
 
 // Hook up the button
 document.getElementById('rob-store-btn').addEventListener('click', () => {
