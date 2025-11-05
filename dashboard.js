@@ -89,5 +89,38 @@ document.addEventListener("DOMContentLoaded", async () => {
       await supabase.auth.signOut();
       window.location.href = "index.html";
     });
+  // === CRIME SYSTEM ===
+async function attemptCrime(crimeKey) {
+  const resultEl = document.getElementById('crime-result');
+  resultEl.textContent = 'Attempting...';
+
+  const { data, error } = await supabase.rpc('do_crime', { crime_key: crimeKey });
+
+  if (error) {
+    console.error(error);
+    resultEl.textContent = error.message ?? 'Error performing crime.';
+    return;
+  }
+
+  if (data?.error) {
+    if (data.error === 'cooldown') {
+      resultEl.textContent = `Cooldown active. Try again in ${Math.ceil(data.remaining_seconds)} seconds.`;
+    } else {
+      resultEl.textContent = `Error: ${data.error}`;
+    }
+    return;
+  }
+
+  if (data.success) {
+    resultEl.textContent = `✅ Success! You stole $${data.reward}. Cash: $${data.new_cash}. Heat: ${data.new_heat}`;
+  } else {
+    resultEl.textContent = `❌ You failed the crime. Heat: ${data.new_heat}`;
+  }
+}
+
+// Hook up the button
+document.getElementById('rob-store-btn').addEventListener('click', () => {
+  attemptCrime('rob_store');
+});
 });
 
