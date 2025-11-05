@@ -14,58 +14,48 @@
     </nav>
   </header>
 
- <main class="dash-main">
+ <main class="dashboard-layout">
+
+  <!-- WELCOME MESSAGE (stays centered) -->
   <section class="welcome">
     <h2>Welcome, <span id="user-email">Player</span></h2>
-    <p>Your empire starts here. Track your cash, power, and influence.</p>
+    <p>Your empire starts here.</p>
   </section>
-   
-<!-- CRIME SECTION -->
-<section class="crime-section">
-  <h3>Street Crimes</h3>
-  <div id="crime-result"></div>
-  <section class="crime-section">
-  <h2>Crimes</h2>
-  <p>Select a crime to attempt:</p>
-  <div id="crime-list" class="crime-list"></div>
-  <p id="crime-result"></p>
-</section>
 
-<main>
-  <section class="stats">
-  <div class="stat-card">
-    <h3>Cash</h3>
-    <p id="stat-cash">$0</p>
-  </div>
-  <div class="stat-card">
-    <h3>Reputation</h3>
-    <p id="stat-reputation">0</p>
-  </div>
-  <div class="stat-card">
-    <h3>Heat</h3>
-    <p id="stat-heat">0</p>
-  </div>
-  <div class="stat-card">
-    <h3>Level</h3>
-    <p id="stat-level">1</p>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="stats-box">
+      <p><strong>Cash:</strong> $<span id="stat-cash">0</span></p>
+      <p><strong>Reputation:</strong> <span id="stat-reputation">0</span></p>
+      <p><strong>Heat:</strong> <span id="stat-heat">0</span></p>
+      <p><strong>Level:</strong> <span id="stat-level">1</span></p>
+      <p><strong>XP:</strong> <span id="stat-xp">0</span></p>
     </div>
 
- <div class="stat-card">
-     <h3>XP</h3>
-     <p id="stat-xp">0</p>
-   </div>
-</section>
+    <button id="tab-crimes" class="tab-btn">Crimes</button>
+    <button id="tab-shop" class="tab-btn">Black Market</button>
+  </aside>
 
+  <!-- MAIN CONTENT SWITCHED BY TABS -->
+  <section id="content-area">
 
-  <section class="profile-settings">
-    <h3>Profile Settings</h3>
-    <form id="display-name-form">
-      <input type="text" id="display-name" placeholder="Enter new display name" required />
-      <button type="submit">Update Name</button>
-    </form>
-    <p id="display-message"></p>
+    <!-- CRIMES PAGE -->
+    <div id="page-crimes" class="page active">
+      <h2>Crimes</h2>
+      <div id="crime-list" class="crime-list"></div>
+      <p id="crime-result"></p>
+    </div>
+
+    <!-- SHOP PAGE (EMPTY FOR NOW — WE ADD NEXT) -->
+    <div id="page-shop" class="page">
+      <h2>Black Market</h2>
+      <p>Coming soon...</p>
+    </div>
+
   </section>
+
 </main>
+
 
 
   <footer class="dash-footer">
