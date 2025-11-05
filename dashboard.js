@@ -191,7 +191,7 @@ async function purchaseItem(itemId) {
   const resultEl = document.getElementById('shop-message');
   resultEl.textContent = "Processing purchase...";
 
-  const { data, error } = await supabase.rpc('buy_item', { item_id: itemId });
+  const { data, error } = await supabase.rpc('buy_item', { p_item_id: itemId });
 
   if (error) {
     console.error(error);
