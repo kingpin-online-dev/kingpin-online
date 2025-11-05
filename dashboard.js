@@ -3,6 +3,48 @@ document.addEventListener("DOMContentLoaded", async () => {
   const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndycG50b2Nrc2VtZ2xweGxtb2RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyNzQxNjcsImV4cCI6MjA3Nzg1MDE2N30.4DyuiCHzKXlvmmJgjfNo2RrF-pw-gbuaHIZXV5NR1wU";
   const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+  const canvas = document.getElementById("crime-canvas");
+const ctx = canvas?.getContext("2d");
+
+function playCrimeAnimation(success) {
+  if (!ctx) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const player = { x: 20, y: 100 };
+  const npc = { x: 200, y: 100 };
+
+  let frame = 0;
+  const totalFrames = 50;
+
+  const interval = setInterval(() => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Move player toward NPC for first half
+    if (frame < totalFrames / 2) {
+      player.x += 2;
+    } else {
+      // Move player away after interaction
+      player.x -= 2;
+    }
+
+    // Draw player
+    ctx.fillStyle = "#FFD700"; // gold player
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Draw NPC — green if success, red if fail
+    ctx.fillStyle = success ? "#00FF00" : "#FF0000";
+    ctx.beginPath();
+    ctx.arc(npc.x, npc.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+
+    frame++;
+    if (frame >= totalFrames) clearInterval(interval);
+  }, 30);
+}
+
   // === PLAYER STATS ===
 async function updateStatsDisplay() {
   const { data: { user } } = await supabase.auth.getUser();
@@ -243,6 +285,8 @@ async function attemptCrime(crimeKey) {
   resultEl.textContent = data.success
     ? `✅ Success! You stole $${data.reward}.`
     : `❌ You failed the crime.`;
+
+  playCrimeAnimation(data.success);
 
   await updateStatsDisplay();
 
