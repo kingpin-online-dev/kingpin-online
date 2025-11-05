@@ -136,6 +136,56 @@ crimeList.appendChild(btn);
   });
 }
 
+  // === SHOP LIST ===
+async function loadShop() {
+  const { data, error } = await supabase
+    .from('shop_items')
+    .select('*')
+    .order('price', { ascending: true });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const shopList = document.getElementById('shop-list');
+  shopList.innerHTML = '';
+
+  data.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'shop-btn';
+    btn.textContent = `${item.name} — $${item.price}`;
+    btn.onclick = () => purchaseItem(item.id);
+    shopList.appendChild(btn);
+  });
+}
+
+
+// === PURCHASE ITEM ===
+async function purchaseItem(itemId) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  const resultEl = document.getElementById('shop-message');
+  resultEl.textContent = "Processing purchase...";
+
+  const { data, error } = await supabase.rpc('buy_item', { item_id: itemId });
+
+  if (error) {
+    console.error(error);
+    resultEl.textContent = error.message;
+    return;
+  }
+
+  if (data?.success) {
+    resultEl.textContent = `✅ Purchase successful! You bought ${data.item_name}.`;
+  } else {
+    resultEl.textContent = `❌ Not enough money.`;
+  }
+
+  await updateStatsDisplay();
+}
+
   // === CRIME SYSTEM ===
 async function attemptCrime(crimeKey) {
   const resultEl = document.getElementById('crime-result');
