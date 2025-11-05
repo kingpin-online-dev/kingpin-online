@@ -101,3 +101,9 @@ body {
   background: gold;
   transform: translateX(3px);
 }
+
+.crime-btn:disabled {
+  cursor: not-allowed;
+  background: #444;
+  color: #888;
+}
