@@ -129,13 +129,24 @@ async function attemptCrime(crimeKey) {
     return;
   }
 
-  if (data?.error) {
-    if (data.error === 'cooldown') {
-      resultEl.textContent = `Cooldown active. Try again in ${Math.ceil(data.remaining_seconds)} seconds.`;
-    } else {
-      resultEl.textContent = `Error: ${data.error}`;
-    }
-    return;
+  // --- Handle all error responses from the backend ---
+if (data?.error) {
+  if (data.error === 'cooldown') {
+    resultEl.textContent = `⏳ Cooldown active. Try again in ${Math.ceil(data.remaining_seconds)} seconds.`;
+  } 
+  else if (data.error === 'jailed' || data.error === 'jailed_now') {
+    // 🚔 Jail feedback
+    resultEl.textContent =
+      data.message ||
+      `🚔 You're in jail for ${Math.ceil(data.remaining_seconds / 60)} minutes!`;
+    await updateStatsDisplay();
+  } 
+  else {
+    resultEl.textContent = `Error: ${data.error}`;
+  }
+  return;
+}
+
   }
 
   if (data.success) {
