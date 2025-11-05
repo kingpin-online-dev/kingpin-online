@@ -204,5 +204,16 @@ if (data?.new_level && data?.new_level > 1) {
   // Show stats when page opens
 updateStatsDisplay();
 loadCrimes();
+
+document.getElementById("tab-crimes").onclick = () => {
+  document.getElementById("page-crimes").classList.add("active");
+  document.getElementById("page-shop").classList.remove("active");
+};
+
+document.getElementById("tab-shop").onclick = () => {
+  document.getElementById("page-shop").classList.add("active");
+  document.getElementById("page-crimes").classList.remove("active");
+};
+
 });
 
