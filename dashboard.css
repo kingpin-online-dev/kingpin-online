@@ -107,3 +107,97 @@ body {
   background: #444;
   color: #888;
 }
+
+/* === DASHBOARD LAYOUT === */
+.dashboard-layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  width: 230px;
+  background: #111;
+  border: 2px solid #b8860b;
+  padding: 15px;
+  border-radius: 8px;
+  color: gold;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Stats formatting inside sidebar */
+.stats-box p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+}
+
+/* Sidebar Buttons */
+.tab-btn {
+  width: 100%;
+  padding: 10px;
+  background: #b8860b;
+  border: none;
+  color: black;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.tab-btn:hover {
+  background: gold;
+}
+
+/* === MAIN CONTENT SECTION === */
+#content-area {
+  flex: 1;
+  background: #0d0d0d;
+  border: 2px solid #b8860b;
+  border-radius: 8px;
+  padding: 20px;
+  color: white;
+}
+
+/* Page Switcher */
+.page {
+  display: none;
+}
+.page.active {
+  display: block;
+}
+
+/* === CRIME LIST BUTTON STYLING (keeps your style) === */
+.crime-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.crime-btn {
+  padding: 10px;
+  background: #b8860b;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.crime-btn:hover:not(:disabled) {
+  background: gold;
+}
+
+.crime-btn:disabled {
+  background: #444;
+  color: #777;
+  cursor: not-allowed;
+}
+
+/* === WELCOME SECTION === */
+.welcome {
+  text-align: center;
+  margin-bottom: 15px;
+  width: 100%;
+}
